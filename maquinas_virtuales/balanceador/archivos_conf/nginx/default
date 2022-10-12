@@ -1,0 +1,29 @@
+
+#Coleccion donde estaran los servidores a los que se van a redireccionar(puede ser ip o nombre)
+upstream backend {
+
+ server wordpress;
+
+}
+#Configuracion
+server {
+#configuracion puerto http 
+	listen 80;
+
+#configuracion puerto https
+	listen 443 ssl;
+	
+#certificados ssl y su ruta
+	ssl_certificate         /etc/nginx/ssl/certificados/server.crt;
+	ssl_certificate_key     /etc/nginx/ssl/certificados/server.key;
+	
+	server_name _;
+
+#redireccionamiento al wordpress 
+	location / { 
+	 proxy_pass http://backend; 
+	 proxy_set_header   Host $host;
+	}
+
+ 
+}
